@@ -1,8 +1,13 @@
-import express from 'express';
 import { validarConexion } from './database/connection.js';
-const app = express();
+import dotenv from 'dotenv'
+import app from './app.js';
 
-app.listen(4000)
 
-console.log('listening on port 4000')
-validarConexion();
+
+ dotenv.config()
+
+ const port = process.env.NODE_PORT
+app.listen(port, () => {
+    console.log('listening on port ', port);
+    validarConexion();
+});
