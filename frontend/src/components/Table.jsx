@@ -27,46 +27,40 @@ function Tables(props) {
     <>
 
 
-    <div className='content-center px-40'>
-    <TableContainer style={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table" >
-          <TableHead>
-            <TableRow>
+    <div className='content-center px-36' >
+    <TableContainer style={{ maxHeight: 440 }} className='bg-slate-200'>
+        <Table stickyHeader aria-label="sticky table" className='border-t-4 border-b-4 border-gray-500 rounded-lg' >
+          <TableHead >
+            <TableRow >
               {props.columns.map((column) => (
                 <TableCell
+       
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
+                 
                 >
                   {column.label}
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>
-            {props.rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {props.columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === 'number'
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
+          <TableBody >
+             {props.rows.map((element)=>
+             <TableRow key={element.iduser}>
+            <TableCell>{element.iduser}</TableCell>
+             <TableCell>{element.nombre_usuarios}</TableCell>
+             <TableCell>{element.nombre_completos}</TableCell>
+             <TableCell>{element.emails}</TableCell>
+          
+             </TableRow>
+             )}
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+      <TablePagination 
+       className=' border-gray-500  rounded-lg'
+        rowsPerPageOptions={[5, 10, 25, 100]}
         component="div"
         count={props.rows.length}
         rowsPerPage={rowsPerPage}

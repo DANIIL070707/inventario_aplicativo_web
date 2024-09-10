@@ -1,5 +1,5 @@
-import React, { createContext, useContext } from "react";
-import { Children } from "react";
+import React, { createContext, useContext, useState } from "react";
+import {getUsuarios} from '../api/gestionUsuarios.js'
 
 
 export const GestionDeUsuariosContext = createContext()
@@ -16,12 +16,24 @@ export const useGestionDeUsuarios = () =>{
 
 
 export const GestionDeUsuariosProvider = ({children}) =>{
+ const [data, setData] = useState([])
 
+ const traerUsuarios = async ()  =>{
+    try {
+        const res = await getUsuarios()
+       return setData(res.data)
+
+    } catch (error) {
+        console.log(error)
+    }
+ }
 
 
     return (
         <GestionDeUsuariosContext.Provider
-        value={{}}
+        value={{
+           data, traerUsuarios
+        }}
         >
 {children}
             </GestionDeUsuariosContext.Provider>
