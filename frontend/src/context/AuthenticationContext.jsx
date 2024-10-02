@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { LoginRequest, emailCodigo, verificarCodigo, restablecerPass} from "../api/authentication.js";
-import { ImagenPerfilRequest } from "../api/perfil.js";
+import { LoginRequest, emailCodigo, verificarCodigo, restablecerPass,
+  datosUsuario
+} from "../api/authentication.js";
+import { ImagenPerfilRequest, sendImageRequest } from "../api/perfil.js";
 import Cookies from 'js-cookie'
 
 
@@ -24,6 +26,8 @@ export const AuthenticationProvider = ({ children }) => {
   const [messageSuccessfully, setMessageSuccessfully] = useState("");
   const [nombre_usuario, setNombre_usuario] = useState("")
   const [rol, setRol] = useState("")
+  const [id, setId] = useState("")
+
   const [image, setImage] = useState(null)
   const [paso1, setPaso1] = useState(true)
   const [paso2, setPaso2] = useState(false)
@@ -39,6 +43,13 @@ export const AuthenticationProvider = ({ children }) => {
       setMessageSuccessfully(res.data.message);
       setNombre_usuario(res.data.user[0].nombre_usuario)
       setRol(res.data.user[0].rol)
+      
+      const cookie = Cookies.get()
+
+//para traer datos usuarios logueado
+    const send = {token:cookie.Token}
+      datosDelUsuario(send)
+
       setTimeout(() => {
         setSuccessfullyRequest(false);
       }, 1000);
@@ -130,9 +141,9 @@ export const AuthenticationProvider = ({ children }) => {
     }
   }
 
-  const imagenPerfil = async () => {
+  const imagenPerfil = async (id) => {
     try {
-      const res = await ImagenPerfilRequest();
+      const res = await ImagenPerfilRequest(id);
       
     
           const imageUrl = URL.createObjectURL(res.data); // Crear URL temporal
@@ -148,6 +159,7 @@ export const AuthenticationProvider = ({ children }) => {
   const Logout = async () => {
 
     Cookies.remove("Token")
+    
     return setIsAuthenticated(false)
   }
 
@@ -157,27 +169,63 @@ export const AuthenticationProvider = ({ children }) => {
   setPaso3(false)
  }
  
-  useEffect(()=>{
-   imagenPerfil()
-      },[])
 
 
 
+
+
+  const datosDelUsuario = async (token) =>{
+    const res = await datosUsuario(token)
+  
+    setNombre_usuario(res.data.fields[0].nombre_usuarios)
+    setRol(res.data.fields[0].id_roles)
+    setId(res.data.fields[0].id_user)
+  }
   useEffect(()=>{
     
 const checkLogin =() =>{
 const cookie = Cookies.get()
 
+
+
+
+//para verificar existencia token
 if(!cookie.Token){
 return setIsAuthenticated(false)
 
 }
+//para traer datos usuarios logueado
+const send = {token:cookie.Token}
+ datosDelUsuario(send)
+//retornar
 return setIsAuthenticated(true)
 }
 
 checkLogin()
   },[])
 
+
+  
+const sendImage = async (id,data) => {
+  try {
+    const res = await sendImageRequest(id, data);
+
+    setSuccessfullyRequest(true)
+    setMessageSuccessfully(res.data.message);
+    setTimeout(() => {
+      setSuccessfullyRequest(false);
+    }, 1000);
+ 
+  } catch (error) {
+    setMessageError(error.response.data.message);
+ 
+    setErrorRequest(true)
+    setMessageSuccessfully(false);
+    setTimeout(() => {
+      setErrorRequest(false);
+    }, 1000);
+  }
+};
 
 
   return (
@@ -187,6 +235,7 @@ checkLogin()
         isAuthenticated,
         nombre_usuario,
         rol,
+        id,
         messageSuccessfully,
         successfullyRequest,
         messageError,
@@ -201,7 +250,9 @@ checkLogin()
         sendContrasena,
         proceso,
         restablerEstado,
-        setPaso1
+        setPaso1,
+        sendImage,
+        imagenPerfil
       }}
     >
       {children}

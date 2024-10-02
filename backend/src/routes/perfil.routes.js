@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { getImage } from '../controllers/perfilController.js';
+import { getImage, sendImage, upload } from '../controllers/perfilController.js';
 
 const router = Router();
 
-router.get('/getImage', getImage);
+router.post('/getImage', getImage);
+router.put('/sendImage/:id',upload.single('file-upload'),sendImage)
 
 export default router;

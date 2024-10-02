@@ -11,3 +11,13 @@ export const generarToken = async (usuario) => {
         console.log('Error al generar el token:', error);
     }
 }
+
+
+export const traerClaims = async(token)=>{
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY)
+        return decoded
+    } catch (error) {
+        return null;
+    }
+} 

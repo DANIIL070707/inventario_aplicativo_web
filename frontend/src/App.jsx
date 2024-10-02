@@ -5,7 +5,7 @@ import { AuthenticationProvider } from "./context/AuthenticationContext";
 import {GestionDeUsuariosProvider} from "./context/GestionDeUsuariosContext"
 import ProtectedRoutes from "./ProtectedRoutes";
 import "./App.css";
-
+import toast, {Toaster} from 'react-hot-toast'
 function App() {
   return (
     <AuthenticationProvider>
@@ -18,6 +18,8 @@ function App() {
           </Route>
         </Routes>
       </Router>
+           
+      <Toaster/>
       </GestionDeUsuariosProvider>
     </AuthenticationProvider>
   );

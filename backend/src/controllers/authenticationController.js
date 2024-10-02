@@ -1,6 +1,6 @@
 import { pool } from "../database/connection.js";
 import bcrypt from "bcryptjs";
-import { generarToken } from "../config/jwt.js";
+import { generarToken, traerClaims } from "../config/jwt.js";
 import { enviarCodigo } from "../helpers/emailCodigo.js";
 
 export const registroUsuario = async (req, res) => {
@@ -40,7 +40,7 @@ export const registroUsuario = async (req, res) => {
 
 
     client.release();
-    res.status(200).json({ message: 'Usuario registrado correctamente' });
+    res.status(201).json({ message: 'Usuario registrado correctamente' });
   } catch (error) {
     console.error('Error al registrar usuario:', error);
     res.status(500).json({ message: 'Error al registrar usuario' });
@@ -166,5 +166,25 @@ export const cambioContrasena = async (req, res) => {
 
   } catch (error) {
     return res.status(500).json({error:error.message})
+  }
+}
+
+
+export const traerDatosUsuario = async (req, res)=>{
+  try {
+    const {token} = req.body
+    const datos = await traerClaims(token)
+    const client =  await pool.connect()
+    
+    const queryTraerDatos = 'SELECT * from  obtener_datos_usuario($1);'
+    const resultTraerDatos = await client.query(queryTraerDatos, [datos.username])
+    client.release()
+    
+    if(resultTraerDatos.length <1 ) return res.status(404).json({error: 'Sin datos'})
+    return res.status(200).json({message: 'datos encontrados', fields: resultTraerDatos.rows })
+  
+  } catch (error) {
+    
+    return res.status(500).json({error: error})
   }
 }

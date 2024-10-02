@@ -3,9 +3,10 @@ import Siderbar from '../components/Siderbar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Home from './Home';
-import GestionUsuarios from './administracion/GestionUsuarios';
+import GestionUsuarios from './administracion/GestionUsuarios/GestionUsuarios';
 import Parametros from './administracion/Parametros';
 import Bitacora from './administracion/Bitacora';
+import Perfil from './perfil/Perfil';
 import { Route, Routes } from 'react-router-dom';
 
 function Dashboard() {
@@ -18,6 +19,7 @@ function Dashboard() {
           <Routes>
           <Route index element={<Home/>}/>
           <Route path='gestionUsuarios' element={<GestionUsuarios/>}/>
+          <Route path='perfil' element={<Perfil/>}/>
           </Routes>
  
         </div>

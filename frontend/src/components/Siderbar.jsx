@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthenticationContext";
 import { Link } from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faUserTie,faUser, faScrewdriverWrench, faWarehouse, faCircleArrowLeft, faCircleArrowRight,
-  faSquareCaretUp,faSquareCaretDown
+  faSquareCaretUp,faSquareCaretDown,faListUl,faToolbox,faFolder, faCubes,faLayerGroup,faStore,faTruckFast
 } from '@fortawesome/free-solid-svg-icons';
 
 function Sidebar() {
@@ -21,6 +21,8 @@ function Sidebar() {
         subcategorias: [
           { nombre: "Gestión de Usuarios", link: "/dashboard/gestionUsuarios", icon:faUser},
           { nombre: "Configuración", link: "/dashboard/configuracion", icon:faScrewdriverWrench },
+          { nombre: "Bitacora", link: "/dashboard/bitacora", icon:faListUl },
+          { nombre: "Parametros", link: "/dashboard/parametros", icon:faToolbox }
         ],
       },
 
@@ -28,7 +30,11 @@ function Sidebar() {
         nombre:"Inventario",
         icon:faWarehouse,
         subcategorias:[
-          { nombre: "Reportes de Ventas", link: "/ventas/reportes",icon:faUser }
+          { nombre: "Reportes de Ventas", link: "/ventas/reportes",icon:faFolder},
+          { nombre: "Existencias", link: "/ventas/existencias",icon:faCubes },
+          { nombre: "Productos", link: "/ventas/productos",icon:faLayerGroup },
+          { nombre: "Compras", link: "/ventas/compras",icon:faStore},
+          { nombre: "Vendedores", link: "/ventas/vendedores",icon:faTruckFast },
         ]
       }
     ],

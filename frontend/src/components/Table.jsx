@@ -1,81 +1,106 @@
 import * as React from 'react';
+import Box from '@mui/material/Box';
+import { DataGrid } from '@mui/x-data-grid';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare , faTrash} from "@fortawesome/free-solid-svg-icons";
+import TextField from '@mui/material/TextField';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
+export default function Tables(props) {
+
+  const {rows, columns, options, ModalEditar, deleteData} = props;
+  const [search, setSearch] = React.useState('')
+  const [dataEdit, setDataEdit] = React.useState([])
+  const [abrir, setAbrirModal] = React.useState(false);
+  const [cerrar, setCerrarModal] = React.useState(false);
+
+ const limpiarDataEdit = () =>{
+  setDataEdit([])
+ }
+  const cerrarModal = () =>{
+
+    setAbrirModal(false)
+    setCerrarModal(true)
+  limpiarDataEdit()
 
 
+    
+  }
 
-function Tables(props) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+console.log(dataEdit)
+const displayedRows =rows.filter((data)=>
+Object.values(data).some((value)=>value.toString().toLowerCase().includes(search.toLocaleLowerCase()))
+)
+  const filterColumns = options ? [...columns,  {
+    field: 'editar',
+    headerName: 'Editar',
+    minWidth: 50,
+    renderCell: (params) => (
+      <div style={{ cursor: 'pointer' }} onClick={() => handleEdit(params.row)}>
+        <FontAwesomeIcon icon={faPenToSquare} />
+      </div>
+    ),
+  },
+  {
+    field: 'eliminar',
+    headerName: 'Eliminar',
+    minWidth: 50,
+    renderCell: (params) => (
+      <div style={{ cursor: 'pointer' }} onClick={() => handleDelete(params.row)}>
+        <FontAwesomeIcon icon={faTrash} />
+      </div>
+    ),
+  },]: columns;
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    const handleEdit = (row) => {
+    // Lógica para editar el usuario
+
+ 
+    setDataEdit(row)
+
+    setAbrirModal(true)
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+  const handleDelete = (row) => {
+    // Lógica para eliminar el usuario
+    deleteData(row.iduser);
+
   };
+
+  
+  
 
   return (
     <>
-
-
-    <div className='content-center px-36' >
-    <TableContainer style={{ maxHeight: 440 }} className='bg-slate-200'>
-        <Table stickyHeader aria-label="sticky table" className='border-t-4 border-b-4 border-gray-500 rounded-lg' >
-          <TableHead >
-            <TableRow >
-              {props.columns.map((column) => (
-                <TableCell
-       
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                 
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody >
-             {props.rows.map((element)=>
-             <TableRow key={element.iduser}>
-            <TableCell>{element.iduser}</TableCell>
-             <TableCell>{element.nombre_usuarios}</TableCell>
-             <TableCell>{element.nombre_completos}</TableCell>
-             <TableCell>{element.emails}</TableCell>
-          
-             </TableRow>
-             )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination 
-       className=' border-gray-500  rounded-lg'
-        rowsPerPageOptions={[5, 10, 25, 100]}
-        component="div"
-        count={props.rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </div>
+    <div className='content-center px-36'>
+    <TextField
+        label='Buscar registro'
+        value={search}
+        onChange={(e)=> setSearch(e.target.value)}
+        
+        size="small"
       
- 
- 
- 
+        />
+        <br />
+        <br />
+    <Box sx={{ height: rows.lenght, width: '100%' }}>
+      <DataGrid
+       // rows={rows.map(user => ({ ...user, id: user.iduser }))}
+       rows={Object.entries(displayedRows).map(([key, value]) => ({ ...value, id: key }))} // Asegurando que cada fila tenga un id único
+        columns={filterColumns}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 5,
+            },
+          },
+        }}
+        pageSizeOptions={[5,1,10]}
+      
+        disableRowSelectionOnClick
+      />
+    </Box>    
+    </div>
+<ModalEditar abrir={abrir} cerrar={cerrarModal}  data={dataEdit} dataRoles={props.dataRoles} />
     </>
   );
 }
-
-
-export default Tables;
