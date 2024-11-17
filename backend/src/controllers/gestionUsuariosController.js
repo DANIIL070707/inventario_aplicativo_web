@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs"
 export const getUsuarios = async (req, res) => {
   try {
     const client = await pool.connect();
-    const queryGetUsuarios = "SELECT * FROM traer_usuarios()";
+    const queryGetUsuarios = "SELECT * FROM vista_usuarios"
     const resultGetUsuarios = await client.query(queryGetUsuarios);
     if (resultGetUsuarios.rows.length < 1)
       return res.status(404).json({ message: "Usuario no encontrados" });

@@ -20,6 +20,7 @@ function Dashboard() {
           <Route index element={<Home/>}/>
           <Route path='gestionUsuarios' element={<GestionUsuarios/>}/>
           <Route path='perfil' element={<Perfil/>}/>
+          <Route path='bitacora' element={<Bitacora/>}/>
           </Routes>
  
         </div>

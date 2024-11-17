@@ -49,13 +49,14 @@ useEffect(()=>{
     },[errorRequest])
 
   const columns = [
-    { field: 'iduser', headerName: 'ID Usuario', minWidth: 120 },
-    { field: 'nombre_usuarios', headerName: 'Nombre de Usuario', minWidth: 120 },
-    { field: 'nombre_completos', headerName: 'Nombre Completo', minWidth: 120 },
-    { field: 'emails', headerName: 'Email', minWidth: 120 }
+    { field: 'id', headerName: 'Id', minWidth: 120 },
+    { field: 'nombre_usuario', headerName: 'Nombre de Usuario', minWidth: 120 },
+    { field: 'nombre_completo', headerName: 'Nombre Completo', minWidth: 120 },
+    { field: 'email', headerName: 'Email', minWidth: 120 }
 
   ];
 
+  console.log(data)
   return (
     <>
       <h1 className='text-3xl pl-2 mb-8'>Gestión de Usuarios</h1>

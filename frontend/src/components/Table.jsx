@@ -52,17 +52,19 @@ Object.values(data).some((value)=>value.toString().toLowerCase().includes(search
   },]: columns;
 
     const handleEdit = (row) => {
-    // Lógica para editar el usuario
+    // Lógica para editar 
 
- 
+    
     setDataEdit(row)
 
     setAbrirModal(true)
   };
 
   const handleDelete = (row) => {
-    // Lógica para eliminar el usuario
-    deleteData(row.iduser);
+    // Lógica para eliminar 
+    
+
+    deleteData(row.id);
 
   };
 
@@ -85,7 +87,10 @@ Object.values(data).some((value)=>value.toString().toLowerCase().includes(search
     <Box sx={{ height: rows.lenght, width: '100%' }}>
       <DataGrid
        // rows={rows.map(user => ({ ...user, id: user.iduser }))}
-       rows={Object.entries(displayedRows).map(([key, value]) => ({ ...value, id: key }))} // Asegurando que cada fila tenga un id único
+       rows={ displayedRows.map(row=>({ ...row, id: row.id }))
+        //Object.entries(displayedRows).map(([key, value]) => ({ ...value, id: key }))} 
+        // Asegurando que cada fila tenga un id único
+       }
         columns={filterColumns}
         initialState={{
           pagination: {

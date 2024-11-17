@@ -17,11 +17,11 @@ function ModalEditar(props) {
   useEffect(() => {
     if (abrir) {
       reset({
-        idEdit: data.iduser || '',
-        nombre_usuarioEdit: data.nombre_usuarios || '',
-        nombre_completoEdit: data.nombre_completos || '',
-        emailEdit: data.emails || '',
-        rol_idEdit: data.id_rol || '',
+        idEdit: data.id || '',
+        nombre_usuarioEdit: data.nombre_usuario || '',
+        nombre_completoEdit: data.nombre_completo || '',
+        emailEdit: data.email || '',
+        rol_idEdit: data.rol_id || '',
       });
     }
   }, [data, abrir]);

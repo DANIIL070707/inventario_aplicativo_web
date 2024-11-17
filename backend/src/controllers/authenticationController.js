@@ -82,6 +82,12 @@ export const login = async  (req, res) => {
 
      
        const token = await generarToken(req.body)
+
+      const queryBitacora = 'SELECT FROM bitacora_sesion($1)'
+      const resultBitacora = await client.query(queryBitacora, [nombre_usuario])
+
+
+
        
        res.cookie("Token", token)
        client.release();
